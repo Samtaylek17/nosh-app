@@ -15,6 +15,11 @@ export const AUTH_VALIDATION_ERRORS = {
   PASSWORD_ERROR_LENGTH: 'Not less than 6 and not more than 30',
 };
 
+export const AUTH_SUCCESS_MESSAGES = {
+  SIGNUP_SUCCESSFUL: 'Signup successful',
+  LOGIN_SUCCESSFUL: 'Login successful',
+};
+
 export const SWAGGER_AUTH_SUMMARY = {
   REGISTRATION: 'registration',
   LOGIN: 'login',
