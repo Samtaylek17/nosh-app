@@ -12,7 +12,7 @@ export class TokenController {
   constructor(private readonly tokenService: TokenService) {}
 
   @ApiOperation({ summary: SWAGGER_TOKEN_SUMMARY.UPDATE_ACCESS_TOKEN })
-  @ApiBody({ type: [UpdateTokenDto] })
+  @ApiBody({ type: UpdateTokenDto })
   @Put('update-access')
   public async updateAccessToken(
     @Body() accessUpdateTokenDto: UpdateTokenDto,
@@ -25,7 +25,7 @@ export class TokenController {
   }
 
   @ApiOperation({ summary: SWAGGER_TOKEN_SUMMARY.UPDATE_REFRESH_TOKEN })
-  @ApiBody({ type: [UpdateTokenDto] })
+  @ApiBody({ type: UpdateTokenDto })
   @Put('update-refresh')
   public async updateRefreshToken(
     @Body() refreshUpdateTokenDto: UpdateTokenDto,
