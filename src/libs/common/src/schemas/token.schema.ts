@@ -8,7 +8,7 @@ export class RefreshToken extends AbstractDocument {
   refreshToken: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  userId: string;
+  userId: mongoose.Types.ObjectId;
 
   @Prop({ type: String })
   userAgent: string;

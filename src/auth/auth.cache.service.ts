@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { RedisService } from '@app/common';
 import { REDIS_CONSTANTS } from './auth.constants';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class AuthCacheService {
@@ -18,7 +19,7 @@ export class AuthCacheService {
   }
 
   public async saveAccessTokenToRedis(
-    userId: string,
+    userId: Types.ObjectId,
     accessToken: string,
   ): Promise<void> {
     const multi = this.redisService.multi();
