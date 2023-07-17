@@ -18,4 +18,4 @@ export * from './exceptions/mongo.exceptions';
 /******  Schema  *****/
 export * from './schemas/token.schema';
 export * from './schemas/user.schema';
-export * from './schemas/role.schema';
+export * from './schemas/wallet.schema';

@@ -1,34 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Body, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { SWAGGER_USER_SUMMARY } from './user.constants';
+import { Role, User } from '@app/common';
+import { DeleteUserDto } from './dto/delete-user.dto';
+import { Roles } from '@auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 
-@Controller('user')
+@ApiTags('user')
+@Controller({ path: 'user', version: '1' })
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.userService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @ApiOperation({ summary: SWAGGER_USER_SUMMARY.DELETE_USER })
+  @ApiCreatedResponse({ type: User })
+  @ApiBody({ type: DeleteUserDto })
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard)
+  @Delete('delete-user')
+  public async deleteUser(@Body() deleteUserDto: DeleteUserDto) {
+    return this.userService.deleteUser(deleteUserDto);
   }
 }

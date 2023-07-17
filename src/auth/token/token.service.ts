@@ -87,6 +87,33 @@ export class TokenService {
     return { accessToken: accessToken };
   }
 
+  public async updateRefreshToken(
+    refreshToken: string,
+  ): Promise<jwtTokensInterface> {
+    const user = await this.tokenRepository.findOne({ refreshToken });
+
+    if (!user) {
+      throw new BadRequestException(AUTH_VALIDATION_ERRORS.TOKEN_NOT_FOUND);
+    }
+
+    const tokens = await this.getTokens(user._id);
+
+    await Promise.all([
+      this.authCacheService.saveAccessTokenToRedis(
+        user._id,
+        tokens.accessToken,
+      ),
+      await this.tokenRepository.findOneAndUpdate(
+        { userId: user._id },
+        { refreshToken: tokens.refreshToken },
+      ),
+    ]);
+
+    return {
+      ...tokens,
+    };
+  }
+
   public async saveUserTokens(
     userId: Types.ObjectId,
     tokens: jwtTokensInterface,

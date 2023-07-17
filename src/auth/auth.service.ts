@@ -95,8 +95,6 @@ export class AuthService {
 
       const passwordDecryption = await bcrypt.compare(password, user.password);
 
-      console.log(passwordDecryption);
-
       if (!passwordDecryption) {
         throw new BadRequestException(
           AUTH_VALIDATION_ERRORS.WRONG_CREDENTIALS_PROVIDED,

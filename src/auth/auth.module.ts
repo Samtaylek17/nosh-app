@@ -10,11 +10,15 @@ import {
   RefreshTokenSchema,
   User,
   UserSchema,
+  Wallet,
+  WalletSchema,
 } from '@app/common';
 import { UserModule } from '@user/user.module';
 import { UserService } from '@user/user.service';
 import { UserRepository } from '@user/user.repository';
 import { MongooseModule } from '@nestjs/mongoose';
+import { WalletRepository } from '@wallet/wallet.repository';
+import { TokenRepository } from './token/token.repository';
 
 @Module({
   imports: [
@@ -24,6 +28,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: RefreshToken.name, schema: RefreshTokenSchema },
+      { name: Wallet.name, schema: WalletSchema },
     ]),
   ],
   controllers: [AuthController],
@@ -33,6 +38,8 @@ import { MongooseModule } from '@nestjs/mongoose';
     RedisService,
     UserService,
     UserRepository,
+    WalletRepository,
+    TokenRepository,
   ],
   exports: [TokenModule, AuthCacheService],
 })

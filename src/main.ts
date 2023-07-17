@@ -32,7 +32,7 @@ const initializeSwagger = (app: INestApplication): void => {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  SwaggerModule.setup('/', app, document);
 };
 
 const initializeApp = async (app: INestApplication): Promise<void> => {

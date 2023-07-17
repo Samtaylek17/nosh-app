@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
+import { WalletService } from './wallet.service';
+import { WalletController } from './wallet.controller';
+import { UserRepository } from '@user/user.repository';
+import { WalletRepository } from './wallet.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   RedisModule,
-  RedisService,
   RefreshToken,
   RefreshTokenSchema,
   User,
@@ -12,25 +13,20 @@ import {
   Wallet,
   WalletSchema,
 } from '@app/common';
-import { TokenModule } from '@auth/token/token.module';
-import { WalletModule } from '@wallet/wallet.module';
-import { UserRepository } from './user.repository';
-import { WalletRepository } from '@wallet/wallet.repository';
-import { TokenRepository } from '@auth/token/token.repository';
+import { JwtService } from '@nestjs/jwt';
 import { AuthCacheService } from '@auth/auth.cache.service';
+import { TokenModule } from '@auth/token/token.module';
 
 @Module({
-  controllers: [UserController],
+  controllers: [WalletController],
   providers: [
-    UserService,
-    WalletModule,
-    TokenRepository,
+    WalletService,
     UserRepository,
     WalletRepository,
+    JwtService,
     AuthCacheService,
   ],
   imports: [
-    WalletModule,
     RedisModule,
     TokenModule,
     MongooseModule.forFeature([
@@ -40,4 +36,4 @@ import { AuthCacheService } from '@auth/auth.cache.service';
     ]),
   ],
 })
-export class UserModule {}
+export class WalletModule {}

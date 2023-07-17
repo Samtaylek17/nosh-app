@@ -7,7 +7,7 @@ import { UpdateTokenDto } from './dto/token.dto';
 import { SWAGGER_TOKEN_SUMMARY } from './token.constants';
 
 @ApiTags('auth')
-@Controller('auth/token')
+@Controller({ path: 'auth/token', version: '1' })
 export class TokenController {
   constructor(private readonly tokenService: TokenService) {}
 
@@ -24,14 +24,14 @@ export class TokenController {
     );
   }
 
-  // @ApiOperation({ summary: SWAGGER_TOKEN_SUMMARY.UPDATE_REFRESH_TOKEN })
-  // @ApiBody({ type: [UpdateTokenDto] })
-  // @Put('update-refresh')
-  // public async updateRefreshToken(
-  //   @Body() refreshUpdateTokenDto: UpdateTokenDto,
-  // ): Promise<{ accessToken: string; refreshToken: string }> {
-  //   return this.tokenService.updateRefreshToken(
-  //     refreshUpdateTokenDto.refreshToken,
-  //   );
-  // }
+  @ApiOperation({ summary: SWAGGER_TOKEN_SUMMARY.UPDATE_REFRESH_TOKEN })
+  @ApiBody({ type: [UpdateTokenDto] })
+  @Put('update-refresh')
+  public async updateRefreshToken(
+    @Body() refreshUpdateTokenDto: UpdateTokenDto,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
+    return this.tokenService.updateRefreshToken(
+      refreshUpdateTokenDto.refreshToken,
+    );
+  }
 }

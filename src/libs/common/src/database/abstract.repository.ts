@@ -168,7 +168,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
    */
   async upsert(
     filterQuery: FilterQuery<TDocument>,
-    document: Partial<TDocument>,
+    document: UpdateQuery<TDocument>,
   ) {
     try {
       return this.model.findOneAndUpdate(filterQuery, document, {
@@ -240,6 +240,14 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
    */
   async count(filterQuery: FilterQuery<TDocument>): Promise<number> {
     return this.model.countDocuments(filterQuery);
+  }
+
+  async deleteOne(filterQuery: FilterQuery<TDocument>) {
+    try {
+      await this.model.deleteOne(filterQuery);
+    } catch (err) {
+      throw new MongoException(err.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   /**

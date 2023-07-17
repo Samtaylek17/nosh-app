@@ -2,6 +2,11 @@ import { AbstractDocument } from '@app/common';
 import { hash } from 'bcrypt';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
+export enum Role {
+  USER = 'user',
+  ADMIN = 'admin',
+}
+
 @Schema({ timestamps: true })
 export class User extends AbstractDocument {
   @Prop({ required: true, type: String })
@@ -21,6 +26,9 @@ export class User extends AbstractDocument {
 
   @Prop({ required: true, select: false, type: String })
   password: string;
+
+  @Prop({ type: String, default: Role.USER })
+  roles?: Role[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

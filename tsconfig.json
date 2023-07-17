@@ -20,7 +20,9 @@
     "paths": {
       "@app/common": ["src/libs/common/src"],
       "@app/common/*": ["src/libs/common/src/*"],
-      "@user/*": ["src/user/*"]
+      "@user/*": ["src/user/*"],
+      "@auth/*": ["src/auth/*"],
+      "@wallet/*": ["src/wallet/*"]
     }
   }
 }

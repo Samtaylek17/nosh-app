@@ -7,6 +7,7 @@ import { DatabaseModule, RedisModule, RedisService } from '@app/common';
 import configuration from 'config/configuration';
 // import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
+import { WalletModule } from './wallet/wallet.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UserModule } from './user/user.module';
     DatabaseModule,
     RedisModule,
     UserModule,
+    WalletModule,
     // MongooseModule.forFeature([])
   ],
   controllers: [AppController],
