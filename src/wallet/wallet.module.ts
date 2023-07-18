@@ -16,7 +16,8 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { AuthCacheService } from '@auth/auth.cache.service';
 import { TokenModule } from '@auth/token/token.module';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   controllers: [WalletController],
@@ -26,6 +27,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     WalletRepository,
     JwtService,
     AuthCacheService,
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
   imports: [
     RedisModule,
