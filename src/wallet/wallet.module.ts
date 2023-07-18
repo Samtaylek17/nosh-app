@@ -16,6 +16,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { AuthCacheService } from '@auth/auth.cache.service';
 import { TokenModule } from '@auth/token/token.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   controllers: [WalletController],
@@ -29,6 +30,10 @@ import { TokenModule } from '@auth/token/token.module';
   imports: [
     RedisModule,
     TokenModule,
+    ThrottlerModule.forRoot({
+      ttl: 10,
+      limit: 1,
+    }),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Wallet.name, schema: WalletSchema },

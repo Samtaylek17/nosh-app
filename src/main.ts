@@ -16,6 +16,8 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
+  app.setGlobalPrefix('/api');
+
   initializeSwagger(app);
 
   await initializeApp(app);

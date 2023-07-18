@@ -15,6 +15,7 @@ import { Roles } from '@auth/decorators/roles.decorator';
 import { GetCurrentUser } from '@user/decorator/user.decorator';
 import { Types } from 'mongoose';
 import { TransferDto } from './dto/transfer.dto';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @ApiTags('wallet')
 @Controller({ path: 'wallet', version: '1' })
@@ -27,6 +28,7 @@ export class WalletController {
   })
   @ApiBearerAuth()
   @ApiBody({ type: CreateWalletDto })
+  @SkipThrottle()
   @UseGuards(JwtAuthGuard)
   @Roles(Role.USER)
   @Post('/create-wallet')
