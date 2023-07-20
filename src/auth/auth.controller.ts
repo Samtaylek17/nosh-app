@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Headers,
-} from '@nestjs/common';
+import { Controller, Post, Body, Headers, UseFilters } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   ApiBearerAuth,
@@ -17,12 +8,13 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { SWAGGER_AUTH_SUMMARY } from './auth.constants';
-import { User } from '@app/common';
+import { MongoExceptionFilter, User } from '@app/common';
 import { SignupDto } from './dto/signup.dto';
 import { jwtTokensInterface } from './token/interfaces/token.interface';
 import { LoginDto } from './dto/login.dto';
 
 @ApiTags('auth')
+@UseFilters(MongoExceptionFilter)
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

@@ -1,4 +1,4 @@
-import { HttpStatus, Logger, NotFoundException } from '@nestjs/common';
+import { Logger, NotFoundException } from '@nestjs/common';
 import {
   FilterQuery,
   Model,
@@ -9,7 +9,6 @@ import {
   PopulateOptions,
 } from 'mongoose';
 import { AbstractDocument } from './abstract.schema';
-import { MongoException } from '@app/common';
 
 export interface PaginationOptions<TDocument> {
   page: number; // Current page number
@@ -53,17 +52,13 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     document: Omit<TDocument, '_id'>,
     options?: SaveOptions,
   ): Promise<TDocument> {
-    try {
-      const createdDocument = new this.model({
-        ...document,
-        _id: new Types.ObjectId(),
-      });
-      return (
-        await createdDocument.save(options)
-      ).toJSON() as unknown as TDocument;
-    } catch (err) {
-      throw new MongoException(err.message, HttpStatus.BAD_REQUEST);
-    }
+    const createdDocument = new this.model({
+      ...document,
+      _id: new Types.ObjectId(),
+    });
+    return (
+      await createdDocument.save(options)
+    ).toJSON() as unknown as TDocument;
   }
 
   /**
@@ -124,31 +119,24 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
       | string[]
       | Record<string, number | boolean | object>,
   ): Promise<TDocument | null> {
-    try {
-      const query = this.model.findOneAndUpdate(filterQuery, update, {
-        new: true,
-      });
+    const query = this.model.findOneAndUpdate(filterQuery, update, {
+      new: true,
+    });
 
-      if (selectOptions) {
-        query.select(selectOptions);
-      }
-
-      if (populateOptions) {
-        query.populate(populateOptions);
-      }
-
-      if (!query) {
-        this.logger.warn(`Document not found with filterQuery:`, filterQuery);
-        throw new NotFoundException('Document not found.');
-      }
-
-      return query.exec();
-    } catch (err) {
-      throw new MongoException(
-        err.message,
-        err.status || HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+    if (selectOptions) {
+      query.select(selectOptions);
     }
+
+    if (populateOptions) {
+      query.populate(populateOptions);
+    }
+
+    if (!query) {
+      this.logger.warn(`Document not found with filterQuery:`, filterQuery);
+      throw new NotFoundException('Document not found.');
+    }
+
+    return query.exec();
   }
 
   /**
@@ -170,15 +158,11 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     filterQuery: FilterQuery<TDocument>,
     document: UpdateQuery<TDocument>,
   ) {
-    try {
-      return this.model.findOneAndUpdate(filterQuery, document, {
-        lean: true,
-        upsert: true,
-        new: true,
-      });
-    } catch (err) {
-      throw new MongoException(err.message, HttpStatus.BAD_REQUEST);
-    }
+    return this.model.findOneAndUpdate(filterQuery, document, {
+      lean: true,
+      upsert: true,
+      new: true,
+    });
   }
 
   /**
@@ -243,11 +227,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
   }
 
   async deleteOne(filterQuery: FilterQuery<TDocument>) {
-    try {
-      await this.model.deleteOne(filterQuery);
-    } catch (err) {
-      throw new MongoException(err.message, HttpStatus.BAD_REQUEST);
-    }
+    await this.model.deleteOne(filterQuery);
   }
 
   /**

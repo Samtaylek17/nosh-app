@@ -17,7 +17,6 @@ import {
 import { User } from '@app/common';
 import { jwtTokensInterface } from './token/interfaces/token.interface';
 import { LoginDto } from './dto/login.dto';
-import { Types } from 'mongoose';
 
 @Injectable()
 export class AuthService {
@@ -114,23 +113,5 @@ export class AuthService {
     } catch (err) {
       throw new HttpException(err.message, err.status);
     }
-  }
-
-  // public async logout(userId: Types.ObjectId)
-
-  create() {
-    return 'This action adds a new auth';
-  }
-
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
   }
 }

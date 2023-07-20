@@ -8,6 +8,8 @@ import configuration from 'config/configuration';
 // import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { WalletModule } from './wallet/wallet.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionFilter } from '@app/common/filters/all-exceptions.filter';
 
 @Module({
   imports: [
@@ -21,9 +23,17 @@ import { WalletModule } from './wallet/wallet.module';
     RedisModule,
     UserModule,
     WalletModule,
+
     // MongooseModule.forFeature([])
   ],
   controllers: [AppController],
-  providers: [AppService, RedisService],
+  providers: [
+    AppService,
+    RedisService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

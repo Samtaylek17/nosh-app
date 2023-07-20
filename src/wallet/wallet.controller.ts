@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, UseFilters } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import {
@@ -9,7 +9,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { SWAGGER_WALLET_SUMMARY } from './wallet.constants';
-import { Role, Wallet } from '@app/common';
+import { MongoExceptionFilter, Role, Wallet } from '@app/common';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { Roles } from '@auth/decorators/roles.decorator';
 import { GetCurrentUser } from '@user/decorator/user.decorator';
@@ -18,6 +18,7 @@ import { TransferDto } from './dto/transfer.dto';
 import { SkipThrottle } from '@nestjs/throttler';
 
 @ApiTags('wallet')
+@UseFilters(MongoExceptionFilter)
 @Controller({ path: 'wallet', version: '1' })
 export class WalletController {
   constructor(private readonly walletService: WalletService) {}

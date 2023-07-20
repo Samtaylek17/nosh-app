@@ -1,4 +1,10 @@
-import { Controller, Body, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  Delete,
+  UseGuards,
+  UseFilters,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import {
   ApiBody,
@@ -7,12 +13,13 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { SWAGGER_USER_SUMMARY } from './user.constants';
-import { Role, User } from '@app/common';
+import { MongoExceptionFilter, Role, User } from '@app/common';
 import { DeleteUserDto } from './dto/delete-user.dto';
 import { Roles } from '@auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 
 @ApiTags('user')
+@UseFilters(MongoExceptionFilter)
 @Controller({ path: 'user', version: '1' })
 export class UserController {
   constructor(private readonly userService: UserService) {}

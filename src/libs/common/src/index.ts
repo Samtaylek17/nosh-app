@@ -13,9 +13,13 @@ export * from './redis/redis.providers';
 export * from './redis/redis.service';
 
 /******  Exceptions  *****/
-export * from './exceptions/mongo.exceptions';
+export * from './filters/mongo.exceptions';
 
 /******  Schema  *****/
 export * from './schemas/token.schema';
 export * from './schemas/user.schema';
 export * from './schemas/wallet.schema';
+
+/**** Exception Filters */
+export * from './filters/all-exceptions.filter';
+export * from './filters/mongo.exceptions';
